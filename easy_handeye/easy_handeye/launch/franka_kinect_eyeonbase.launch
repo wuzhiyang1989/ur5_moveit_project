@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="namespace_prefix" default="panda_eob_calib"/>
+
+    <!-- (start your robot's MoveIt! stack, e.g. include its moveit_planning_execution.launch) -->
+    <include file="$(find panda_moveit_config)/launch/panda_control_moveit_rviz.launch">
+        <!-- <arg name="robot_ip" value="172.16.0.2"/> -->
+        <!-- <arg name="load_gripper" value="true"/> -->
+        <!-- <arg name="launch_rviz" value="false"/> -->
+    </include>
+    
+    <!-- (start your tracking system's ROS driver) -->
+    <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch"> </include>
+
+        <!-- fill in the following parameters according to your tracking system -->
+        <arg name="markerId"        default="613"/> 
+        <arg name="markerSize"      default="0.035"/>
+        <arg name="eye"             default="left"/>
+        <arg name="marker_frame"    default="camera_marker"/>
+        <arg name="ref_frame"       default="kinect2_rgb_optical_frame"/>  
+        <arg name="corner_refinement" default="LINES" /> 
+        <arg name="camera_frame" default="kinect2_rgb_optical_frame" />
+        <arg name="camera_image_topic" default="/kinect2/hd/image_color" />
+        <arg name="camera_info_topic" default="/kinect2/hd/camera_info" /> 
+
+    <node pkg="aruco_ros" type="single" name="aruco_single">
+        <remap to="$(arg camera_info_topic)" from="/camera_info" />
+        <remap to="$(arg camera_image_topic)" from="/image" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="$(arg markerSize)"/>
+        <param name="marker_id"          value="$(arg markerId)"/>
+        <param name="reference_frame"    value="$(arg ref_frame)"/>  
+        <param name="camera_frame"       value="$(arg camera_frame)"/>
+        <param name="marker_frame"       value="$(arg marker_frame)" />
+        <param name="corner_refinement"  value="$(arg corner_refinement)" />
+    </node>
+
+
+    <!-- (start hand-eye-calibration) -->
+    <include file="$(find easy_handeye)/launch/calibrate.launch">
+        <arg name="eye_on_hand" value="false"/>
+        <arg name="namespace_prefix" value="$(arg namespace_prefix)"/>
+        <arg name="move_group" value="panda_arm"  doc="the name of move_group for the automatic robot motion with MoveIt!" />
+        <arg name="freehand_robot_movement" value="false"/>
+
+        <!-- fill in the following parameters according to your robot's published tf frames -->
+        <arg name="robot_base_frame" value="world"/>
+        <arg name="robot_effector_frame" value="panda_EE"/>
+
+        <!-- fill in the following parameters according to your tracking system's published tf frames -->
+        <arg name="tracking_base_frame" value="kinect2_rgb_optical_frame"/>
+        <arg name="tracking_marker_frame" value="camera_marker"/>
+    </include>
+
+    <!-- (publish tf after the calibration) -->
+    <!-- roslaunch easy_handeye publish.launch eye_on_hand:=false namespace_prefix:=$(arg namespace_prefix) -->
+
+</launch>

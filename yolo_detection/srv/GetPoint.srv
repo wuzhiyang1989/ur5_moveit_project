@@ -1,0 +1,4 @@
+int16 u
+int16 v
+---
+geometry_msgs/Point position

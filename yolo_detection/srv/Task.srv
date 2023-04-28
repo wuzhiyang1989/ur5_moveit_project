@@ -1,0 +1,4 @@
+string    image_filename
+---
+bool      detect_flag
+Object[]  obj

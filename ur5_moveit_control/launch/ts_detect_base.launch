@@ -1,0 +1,13 @@
+<launch>
+    <!-- 启动图像采集节点 -->
+    <!-- <node pkg="hm_cooperation" type="image_unit" name="image_unit_node" output="screen"/> -->
+
+    <!-- 启动点云获取节点 -->
+    <node pkg="yolo_detection" type="point_cloud_service.py" name="point_cloud_service_node" output="screen"/>
+
+    <!-- 启动物品检测节点 -->
+    <node pkg="yolo_detection" type="object_service.py" name="object_service_node" output="screen"/>
+
+    <!-- 启动容器检测节点 -->
+    <!-- <node pkg="yolo_detection" type="target_service.py" name="target_service_node" output="screen"/> -->
+</launch>

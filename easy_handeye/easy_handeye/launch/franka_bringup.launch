@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<launch>
+    <include file="$(find panda_moveit_config)/launch/panda_control_moveit_rviz.launch">
+        <arg name="robot_ip" value="172.16.0.2"/> <!-- set your robot ip -->
+        <arg name="load_gripper" value="true"/>
+        <arg name="launch_rviz" value="false"/>
+    </include>  
+</launch>

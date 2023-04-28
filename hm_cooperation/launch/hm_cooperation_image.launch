@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" />
+    <include file="$(find easy_handeye)/launch/publish.launch" />
+    <include file="$(find aruco_ros)/launch/double.launch" />
+
+    <!-- <node pkg="hm_cooperation" type="transfer_node.py" name="aruco_transfer" output="screen"/> -->
+
+<!--     <node pkg="tf_tools" type="tf_translate_service.py" name="tf_translate_service" output="screen"/> -->
+</launch>
